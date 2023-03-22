@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import apiClient from "../services/api-client";
-import axios from "axios";
+import useData from "./useData";
 
 export interface Platform {
   id: number;
@@ -16,36 +14,8 @@ export interface Game {
   metacritic: number;
 }
 
-interface FGR {
-  count: number;
-  results: Game[];
-}
-
 const useGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    setLoading(true);
-
-    apiClient
-      .get<FGR>("/games", { signal: controller.signal })
-      .then((response) => {
-        setGames(response.data.results);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (axios.isCancel(err)) return;
-        setError(err.message);
-        setLoading(false);
-      });
-    return () => controller.abort();
-  }, []);
-
-  return { games, error, setError, setGames, isLoading };
+  return useData<Game>("/games");
 };
 
 export default useGames;
