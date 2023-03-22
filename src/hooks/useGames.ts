@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
+import axios from "axios";
 
 interface Game {
   id: number;
@@ -23,7 +24,7 @@ const useGames = () => {
         setGames(response.data.results);
       })
       .catch((err) => {
-        if (err.name === "AbortError") return;
+        if (axios.isCancel(err)) return;
         setError(err.message);
       });
     return () => controller.abort();
