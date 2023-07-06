@@ -9,15 +9,7 @@ import { Genre } from "./hooks/useGenres";
 import SortSelector from "./components/SortSelector";
 import GameHeading from "./components/GameHeading";
 
-export interface GameQuery {
-  genreId?: number;
-  platformId?: number;
-  sortOrder: string;
-  searchText: string;
-}
-
 function App() {
-  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
   // const [selectedGenre, setSelecetedGenre] = useState<Genre | null>(null);
   // const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(
   //   null
@@ -38,43 +30,24 @@ function App() {
       }}
     >
       <GridItem gridArea="nav">
-        <NavBar
-          onSearch={(searchText) => {
-            setGameQuery({ ...gameQuery, searchText });
-          }}
-        />
+        <NavBar />
       </GridItem>
       <Show above="lg">
         <GridItem gridArea="aside" paddingX={5}>
-          <GenresList
-            selectedGenreId={gameQuery.genreId}
-            onSelecteGenre={(genre) =>
-              setGameQuery({ ...gameQuery, genreId: genre.id })
-            }
-          />
+          <GenresList />
         </GridItem>
       </Show>
       <GridItem gridArea="main">
         <Box paddingLeft={2}>
-          <GameHeading gameQuery={gameQuery} />
+          <GameHeading />
           <Flex marginBottom={5}>
             <Box marginRight={5}>
-              <PlatformSelector
-                selectedPlatformId={gameQuery.platformId}
-                onSelectPlatform={(platform) =>
-                  setGameQuery({ ...gameQuery, platformId: platform.id })
-                }
-              />
+              <PlatformSelector />
             </Box>
-            <SortSelector
-              sortOrder={gameQuery.sortOrder}
-              onSelectSort={(sortOrder) =>
-                setGameQuery({ ...gameQuery, sortOrder })
-              }
-            />
+            <SortSelector />
           </Flex>
         </Box>
-        <GameGrid gameQuery={gameQuery} />
+        <GameGrid />
       </GridItem>
     </Grid>
   );
